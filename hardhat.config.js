@@ -26,6 +26,9 @@ module.exports = {
     hardhat: {
       chainId: +process.env.HARDHAT_CHAIN_ID || 1337
     },
+    ganache: {
+      url: process.env.GANA_URL
+    },
     ropsten: {
       url: process.env.ROPSTEN_URL,
       accounts: [`0x${process.env.ROPSTEN_PRIVATE_KEY}`]

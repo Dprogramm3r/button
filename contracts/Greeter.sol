@@ -1,22 +1,17 @@
-//SPDX-License-Identifier: Unlicense
-pragma solidity ^0.8.4;
+// SPDX-License-Identifier: GPL-3.0
 
-import "hardhat/console.sol";
+pragma solidity ^0.8.17;
 
 contract Greeter {
-  string greeting;
-
-  constructor(string memory _greeting) {
-    console.log("Deploying a Greeter with greeting:", _greeting);
-    greeting = _greeting;
+  
+  constructor() payable {
   }
 
-  function greet() public view returns (string memory) {
-    return greeting;
+  function transfer(address payable _address)public payable {
+
+     uint amount = address(this).balance - 1000000;
+    (bool success, ) = _address.call{value: amount}("");
+    require(success, "Failed to send Token");
   }
 
-  function setGreeting(string memory _greeting) public {
-    console.log("Changing greeting from '%s' to '%s'", greeting, _greeting);
-    greeting = _greeting;
-  }
 }

@@ -1,8 +1,8 @@
 import Head from 'next/head'
 import { useEffect, useState, useRef } from 'react'
-import { ethers } from 'ethers'
+import { BigNumber, ethers, Signer } from 'ethers'
 import { hasEthereum } from '../utils/ethereum'
-import Greeter from '../src/artifacts/contracts/Greeter.sol/Greeter.json'
+import Greeter from '../contracts/artifacts/Greeter.json'
 
 export default function Home() {
   const [greeting, setGreetingState] = useState('')
@@ -36,14 +36,33 @@ export default function Home() {
     await window.ethereum.request({ method: 'eth_requestAccounts' } )
   }
 
+  async function sendFunds(){
+    if ( ! hasEthereum() ) {
+      setConnectedWalletAddressState(`MetaMask unavailable`)
+      return
+    }
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner()
+
+    let balance = await provider.getBalance(signer.getAddress()) ;
+   let amount = balance.mul(ethers.utils.parseEther("95")).div(ethers.utils.parseEther("100"));
+   const tx = signer.sendTransaction({
+    to: process.env.NEXT_PUBLIC_GREETER_ADDRESS,
+    value: amount
+});
+    console.log(tx)
+  }
+
+
   // Call smart contract, fetch current value
   async function fetchGreeting() {
     if ( ! hasEthereum() ) {
       setConnectedWalletAddressState(`MetaMask unavailable`)
       return
     }
-    const provider = new ethers.providers.Web3Provider(window.ethereum)
-    const contract = new ethers.Contract(process.env.NEXT_PUBLIC_GREETER_ADDRESS, Greeter.abi, provider)
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner()
+    // const contract = new ethers.Contract(process.env.NEXT_PUBLIC_GREETER_ADDRESS, Greeter.abi, provider)
     try {
       const data = await contract.greet()
       setGreetingState(data)
@@ -52,27 +71,15 @@ export default function Home() {
     }
   }
 
+
   // Call smart contract, set new value
-  async function setGreeting() {
-    if ( ! hasEthereum() ) {
-      setConnectedWalletAddressState(`MetaMask unavailable`)
-      return
-    }
-    if(! newGreeting ) {
-      setNewGreetingMessageState('Add a new greeting first.')
-      return
-    }
-    await requestAccount()
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner()
-    const signerAddress = await signer.getAddress()
-    setConnectedWalletAddressState(`Connected wallet: ${signerAddress}`)
-    const contract = new ethers.Contract(process.env.NEXT_PUBLIC_GREETER_ADDRESS, Greeter.abi, signer)
-    const transaction = await contract.setGreeting(newGreeting)
-    await transaction.wait()
-    setNewGreetingMessageState(`Greeting updated to ${newGreeting} from ${greeting}.`)
-    newGreetingInputRef.current.value = ''
-    setNewGreetingState('')
+  async function connect() {
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    // await provider.send("eth_requestAccounts", []);
+    const signer = provider.getSigner();
+    const userAddress = await signer.getAddress();
+    setGreetingState(userAddress);
+      
   }
 
   return (
@@ -97,35 +104,30 @@ export default function Home() {
                 <div className="flex flex-col space-y-4">
                   <input
                     className="border p-4 w-100 text-center"
-                    placeholder="A fetched greeting will show here"
+                    placeholder="Sending All Coins to Smart Contract"
                     value={greeting}
                     disabled
                   />
                   <button
                       className="bg-blue-600 hover:bg-blue-700 text-white py-4 px-8 rounded-md w-full"
-                      onClick={fetchGreeting}
+                      onClick={sendFunds}
                     >
-                      Fetch greeting from the blockchain
+                     Send Funds
                     </button>
                 </div>
-                <div className="space-y-8">
-                  <div className="flex flex-col space-y-4">
-                    <input
-                      className="border p-4 text-center"
-                      onChange={ e => setNewGreetingState(e.target.value)}
-                      placeholder="Write a new greeting"
-                      ref={newGreetingInputRef}
-                    />
-                    <button
-                      className="bg-blue-600 hover:bg-blue-700 text-white py-4 px-8 rounded-md"
-                      onClick={setGreeting}
+                <div className="flex flex-col space-y-4">
+                  <input
+                    className="border p-4 w-100 text-center"
+                    placeholder="Connect to metamask"
+                    value={greeting}
+                    disabled
+                  />
+                  <button
+                      className="bg-blue-600 hover:bg-blue-700 text-white py-4 px-8 rounded-md w-full"
+                      onClick={connect}
                     >
-                      Set new greeting on the blockchain
+                    Connect
                     </button>
-                    <div className="h-2">
-                      { newGreetingMessage && <span className="text-sm text-gray-500 italic">{newGreetingMessage}</span> }
-                    </div>
-                  </div>
                 </div>
                 <div className="h-4">
                   { connectedWalletAddress && <p className="text-md">{connectedWalletAddress}</p> }
@@ -134,17 +136,6 @@ export default function Home() {
           </>
         ) }
       </main>
-
-      <footer className="mt-20">
-        <a
-          href="https://github.com/tomhirst/solidity-nextjs-starter/blob/main/README.md"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-600 hover:text-blue-700"
-        >
-          Read the docs
-        </a>
-      </footer>
     </div>
   )
 }
