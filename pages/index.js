@@ -86,7 +86,7 @@ export default function Home() {
         ) : ( */}
           <>
             <h1 className="text-4xl font-semibold mb-8">
-              Solidity
+              Solidityy
             </h1>
             <div className="space-y-8">
                 <div className="flex flex-col space-y-4">
