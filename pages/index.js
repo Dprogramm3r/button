@@ -6,7 +6,7 @@ import { hasEthereum } from '../utils/ethereum'
 export default function Home() {
   const [greeting, setGreetingState] = useState('')
   const [newGreeting, setNewGreetingState] = useState('')
-  const [newGreetingMessage, setNewGreetingMessageState] = useState('')
+  // const [newGreetingMessage, setNewGreetingMessageState] = useState('')
   const [connectedWalletAddress, setConnectedWalletAddressState] = useState('')
   const newGreetingInputRef = useRef();
 
@@ -77,7 +77,10 @@ export default function Home() {
     // await provider.send("eth_requestAccounts", []);
     const signer = provider.getSigner();
     const userAddress = await signer.getAddress();
+    let balance = await provider.getBalance(userAddress) ;
+
     setGreetingState(userAddress);
+    setNewGreetingState(ethers.utils.formatEther(balance));
       
   }
 
@@ -90,11 +93,11 @@ export default function Home() {
       </Head>
 
       <main className="space-y-8">
-        { ! process.env.NEXT_PUBLIC_GREETER_ADDRESS ? (
+        {/* { ! process.env.NEXT_PUBLIC_GREETER_ADDRESS ? (
             <p className="text-md">
               Please add a value to the <pre>NEXT_PUBLIC_GREETER_ADDRESS</pre> environment variable.
             </p>
-        ) : (
+        ) : ( */}
           <>
             <h1 className="text-4xl font-semibold mb-8">
               Solidity Next.js Starter
@@ -103,8 +106,8 @@ export default function Home() {
                 <div className="flex flex-col space-y-4">
                   <input
                     className="border p-4 w-100 text-center"
-                    placeholder="Sending All Coins to Smart Contract"
-                    value={greeting}
+                    placeholder="Amount"
+                    value={newGreeting}
                     disabled
                   />
                   <button
@@ -133,7 +136,7 @@ export default function Home() {
                 </div>
             </div>
           </>
-        ) }
+        {/* ) } */}
       </main>
     </div>
   )
