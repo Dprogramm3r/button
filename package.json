@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@coinbase/wallet-sdk": "^3.6.3",
     "@web3modal/ethereum": "^2.0.0-rc.1",
     "@web3modal/react": "^2.0.0-rc.1",
     "dotenv": "^10.0.0",

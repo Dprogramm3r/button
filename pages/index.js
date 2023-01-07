@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import * as React from 'react'
-import { Profile } from './Profile'
+import { Profile } from '../components/profile'
 
 import { WagmiConfig, createClient, configureChains  } from 'wagmi'
 import { avalanche, bsc,optimism, arbitrum, mainnet,polygon, localhost } from '@wagmi/core/chains'
