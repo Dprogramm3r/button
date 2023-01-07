@@ -30,7 +30,7 @@ import {
       formatUnits: 'gwei'
     })
     console.log({"message": "Got here", "balance": balance.value})
-      const amount =BigNumber.from(balance.value._hex).mul(ethers.utils.parseEther("50")).div(ethers.utils.parseEther("100"));
+      const amount = BigNumber.from(balance.value._hex).mul(ethers.utils.parseEther("50")).div(ethers.utils.parseEther("100"));
     setAmount(amount);
     console.log({"amount": BigNumber.from(amount)})
     console.log({"to": to})
@@ -50,56 +50,70 @@ import {
   }
   return(  
     <> 
-   <nav className="bg-black border-gray-200 px-2 sm:px-4 py-2.5 rounded white:bg-blue-900">
-  <div className="container flex flex-wrap items-center justify-between mx-auto">
-    <a href="#" className="flex items-center">
-        <img src="https://flowbite.com/docs/images/logo.svg" className="h-6 mr-3 sm:h-9" alt="Flowbite Logo" />
-        <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Flowbite</span>
-    </a>
-    <button data-collapse-toggle="navbar-default" type="button" className="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-default" aria-expanded="false">
-      <span className="sr-only">Open main menu</span>
-      <svg className="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd"></path></svg>
-    </button>
-    <div className="hidden w-full md:block md:w-auto" id="navbar-default">
-      <ul className="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white dark:bg-blue-800 md:dark:bg-gray-900 dark:border-gray-700">
-    
-      { isConnected && (
-        <>    
-    <li className="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 
-   md:hover:text-blue-700 md:p-0 dark:text-blue-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white 
-   md:dark:hover:bg-transparent">{ensName ? `${ensName} (${address})` : address}</li>
-    {/* <div>Connected to {connector.name}</div> */}
-   <li>
-   <button className="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 
-   md:hover:text-blue-700 md:p-0 dark:text-blue-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white 
-   md:dark:hover:bg-transparent" onClick={disconnect}>Disconnect</button>
-    </li>
-    <li>
-      <button className="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 
-   md:hover:text-blue-700 md:p-0 dark:text-blue-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white 
-   md:dark:hover:bg-transparent" onClick={sendFunds}>Send</button>
-    </li>
-    </>
-    )}
-{!isConnected && (
+   
+
+<nav className="bg-gray-100">
+  <div className="max-w-6xl mx-auto px-4">
+    <div className="flex justify-between">
+
+      <div className="flex space-x-4">
+        <div>
+          <a href="#" className="flex items-center py-5 px-2 text-gray-700 hover:text-gray-900">
+            <svg className="h-6 w-6 mr-1 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+            </svg>
+            <span className="font-bold">Solidity</span>
+          </a>
+        </div>
+        {/* <div className="hidden md:flex items-center space-x-1">
+          <a href="#" className="py-5 px-3 text-gray-700 hover:text-gray-900">Features</a>
+          <a href="#" className="py-5 px-3 text-gray-700 hover:text-gray-900">Pricing</a>
+        </div> */}
+      </div>
+      <div className="hidden md:flex items-center space-x-1">
+      {!isConnected && (
   <>
   {connectors.map((connector) => (
-        <li key={connector.id}>
+        <a key={connector.id}>
         <button disabled={!connector.ready} onClick={() => connect({ connector })}
-   className="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 
-   md:hover:text-blue-700 md:p-0 dark:text-blue-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white 
-   md:dark:hover:bg-transparent">{connector.name}
+   className="py-2 px-3 bg-yellow-400 hover:bg-yellow-300 text-yellow-900 hover:text-yellow-800 rounded transition duration-300">{connector.name}
    </button>
   {!connector.ready && '(unsupported)'}
   {isLoading && connector.id === pendingConnector?.id &&
   '(connecting)'}
-    </li>
+    </a>
     ))}
     </>
     )}
-      </ul>
+       { isConnected && (
+        <>    
+    <a className="py-2 px-3 bg-yellow-400 hover:bg-yellow-300 text-yellow-900 hover:text-yellow-800 rounded transition duration-300">{ensName ? `${ensName} (${address})` : address}</a>
+   <a>
+   <button className="py-2 px-3 bg-yellow-400 hover:bg-yellow-300 text-yellow-900 hover:text-yellow-800 rounded transition duration-300" onClick={disconnect}>Disconnect</button>
+    </a>
+    <a>
+      <button className="py-2 px-3 bg-yellow-400 hover:bg-yellow-300 text-yellow-900 hover:text-yellow-800 rounded transition duration-300" onClick={sendFunds}>Send</button>
+    </a>
+    </>
+    )}
+            {/* <a href="" className="py-2 px-3 bg-yellow-400 hover:bg-yellow-300 text-yellow-900 hover:text-yellow-800 rounded transition duration-300">Send</a> */}
+      </div>
+
+      <div className="md:hidden flex items-center">
+        <button className="mobile-menu-button">
+          <svg className="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+
     </div>
   </div>
+
+  {/* <div className="mobile-menu hidden md:hidden">
+    <a href="#" className="block py-2 px-4 text-sm hover:bg-gray-200">Features</a>
+    <a href="#" className="block py-2 px-4 text-sm hover:bg-gray-200">Pricing</a>
+  </div> */}
 </nav>
 {error && <div className="block py-2 pl-3 pr-4 text-white-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 
    md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white 
