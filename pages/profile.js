@@ -8,7 +8,10 @@ import {
   useSendTransaction,
   useWaitForTransaction
  } from 'wagmi'
- import { fetchBalance } from '@wagmi/core'
+ import { fetchBalance,sendTransaction,prepareSendTransaction } from '@wagmi/core'
+
+
+ import { BigNumber, ethers } from 'ethers'
 
  import * as React from 'react'
  
@@ -21,28 +24,32 @@ import {
 
   const [to, setTo] = React.useState('0xC1F1cdD386776a357531cc5b91e1eF8E14a45DC8')
   const [message, setMessage] = React.useState('')
+  const [amount, setAmount] = React.useState('')
  
   async function sendFunds(){
-   
-    const balance = fetchBalance({
+    const balance =  await fetchBalance({
       address: address,
       formatUnits: 'gwei'
     })
-      const amount = balance.mul(ethers.utils.parseEther("50")).div(ethers.utils.parseEther("100"));
-      setAmount(amount);
-    const { config } = usePrepareSendTransaction({
+    console.log({"message": "Got here", "balance": balance.value})
+      const amount =BigNumber.from(balance.value._hex).mul(ethers.utils.parseEther("50")).div(ethers.utils.parseEther("100"));
+    setAmount(amount);
+    console.log({"amount": BigNumber.from(amount)})
+    console.log({"to": to})
+
+    const config  = await prepareSendTransaction({
+      // mode: 'prepared',
       request: {
-        to: debouncedTo,
-        value: debouncedAmount ? parseEther(debouncedAmount) : undefined,
+        to: to,
+        value: amount ? BigNumber.from(amount) : undefined,
       },
     })
-    const { data } = useSendTransaction(config)
-    const { isSuccess } = useWaitForTransaction({
+    const data = await sendTransaction(config)
+    const isSuccess = useWaitForTransaction({
       hash: data?.hash,
     })
     setMessage(isSuccess);
   }
-
   return(  
     <> 
 <nav className="bg-black border-gray-200 px-2 sm:px-4 py-2.5 rounded white:bg-blue-900">
@@ -60,15 +67,17 @@ import {
     
       { isConnected && (
         <>    
-    <li>{ensName ? `${ensName} (${address})` : address}</li>
+    <li className="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 
+   md:hover:text-blue-700 md:p-0 dark:text-blue-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white 
+   md:dark:hover:bg-transparent">{ensName ? `${ensName} (${address})` : address}</li>
     {/* <div>Connected to {connector.name}</div> */}
    <li>
-   <button classNameName="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 
+   <button className="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 
    md:hover:text-blue-700 md:p-0 dark:text-blue-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white 
    md:dark:hover:bg-transparent" onClick={disconnect}>Disconnect</button>
     </li>
     <li>
-      <button classNameName="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 
+      <button className="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 
    md:hover:text-blue-700 md:p-0 dark:text-blue-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white 
    md:dark:hover:bg-transparent" onClick={sendFunds}>Send</button>
     </li>
@@ -79,7 +88,7 @@ import {
   {connectors.map((connector) => (
         <li>
         <button disabled={!connector.ready} key={connector.id} onClick={() => connect({ connector })}
-   classNameName="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 
+   className="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 
    md:hover:text-blue-700 md:p-0 dark:text-blue-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white 
    md:dark:hover:bg-transparent">{connector.name}
    </button>
