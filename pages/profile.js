@@ -15,7 +15,7 @@ import {
 import * as Image from 'next/image';
  import * as React from 'react'
  
- export function Profile() {
+ export default function Profile() {
   const { address, connector, isConnected } = useAccount()
   const { data: ensAvatar } = useEnsAvatar({ address })
   const { data: ensName } = useEnsName({ address })
