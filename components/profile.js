@@ -12,7 +12,6 @@ import {
 
 
  import { BigNumber, ethers } from 'ethers'
-import * as Image from 'next/image';
  import * as React from 'react'
  
  export default function Profile() {

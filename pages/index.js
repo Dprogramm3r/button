@@ -1,5 +1,3 @@
-import Head from 'next/head'
-import * as React from 'react'
 import { Profile } from '../components/profile'
 
 import { WagmiConfig, createClient, configureChains  } from 'wagmi'
@@ -16,7 +14,7 @@ import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 // Configure chains & providers with the Alchemy provider.
 // Two popular providers are Alchemy (alchemy.com) and Infura (infura.io)
 const { chains, provider, webSocketProvider } = configureChains(
-  [mainnet, avalanche, bsc,polygon, localhost,optimism],
+  [mainnet, avalanche, bsc,polygon, localhost,optimism,arbitrum],
   [publicProvider()],
 )
  
