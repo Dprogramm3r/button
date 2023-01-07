@@ -1,4 +1,5 @@
 import  Profile from '../components/Profile'
+
 import { WagmiConfig, createClient, configureChains  } from 'wagmi'
 import { avalanche, bsc,optimism, arbitrum, mainnet,polygon, localhost } from '@wagmi/core/chains'
 
@@ -50,7 +51,7 @@ const client = createClient({
 export default function Home() {
   return (
     <WagmiConfig client={client}>
-      <Profile/>
+      <Profile />
     </WagmiConfig>
   )
 }

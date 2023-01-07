@@ -12,11 +12,12 @@ import {
 
 
  import { BigNumber, ethers } from 'ethers'
- import * as React from 'react'
+ import { useEffect, useState } from 'react'
  
  export default function Profile() {
   const { address, connector, isConnected } = useAccount()
   const { data: ensAvatar } = useEnsAvatar({ address })
+  // const [color, setAddress] = useState('')
   const { data: ensName } = useEnsName({ address })
   const { connect, connectors, error, isLoading, pendingConnector } =  useConnect()
   const { disconnect } = useDisconnect()
@@ -102,19 +103,18 @@ import {
     </div>
   </div>
 </nav>
-<body>
 {error && <div className="block py-2 pl-3 pr-4 text-white-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 
    md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white 
    md:dark:hover:bg-transparent" >{error.message}</div>}
-    {message && (
-        <div>
+    {message &&
+        <div className="block py-2 pl-3 pr-4 text-white-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 
+        md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white 
+        md:dark:hover:bg-transparent">
           Successfully sent {amount} ether to {to}
           <div>
-            <a href={`https://etherscan.io/tx/${data?.hash}`}>Etherscan</a>
           </div>
         </div>
-      )}
-</body>
+      }
 </>
   )
  }
