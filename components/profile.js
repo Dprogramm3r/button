@@ -12,7 +12,7 @@ import {
 
 
  import { BigNumber, ethers } from 'ethers'
- import { useEffect, useState } from 'react'
+ import * as React from 'react'
  
  export default function Profile() {
   const { address, connector, isConnected } = useAccount()
