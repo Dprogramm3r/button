@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import * as React from 'react'
 import { Profile } from './Profile'
 
 import { WagmiConfig, createClient, configureChains  } from 'wagmi'
