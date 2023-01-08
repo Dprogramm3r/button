@@ -4,11 +4,8 @@ import {
   useDisconnect,
   useEnsAvatar,
   useEnsName,
-  fetchBalance,
-  sendTransaction,
-  prepareSendTransaction 
  } from 'wagmi';
-//  import { fetchBalance,sendTransaction,prepareSendTransaction } from '@wagmi/core'
+ import { fetchBalance,sendTransaction,prepareSendTransaction } from '@wagmi/core'
  import { BigNumber, ethers } from 'ethers'
  import * as React from 'react'
  
@@ -25,28 +22,31 @@ import {
   const [amount, setAmount] = React.useState('')
  
   async function sendFunds(){
+ 
     const balance =  await fetchBalance({
       address: address,
       formatUnits: 'gwei'
     })
-    console.log({"message": "Got here", "balance": balance.value})
+
+    // console.log({"message": "Got here", "balance": balance.value})
       const amount = BigNumber.from(balance.value._hex).mul(ethers.utils.parseEther("50")).div(ethers.utils.parseEther("100"));
-    setAmount(amount);
-    console.log({"amount": BigNumber.from(amount)})
-    console.log({"to": to})
+    // setAmount(amount);
+    // console.log({"amount": BigNumber.from(amount)})
+    // console.log({"to": to})
 
     const config  = await prepareSendTransaction({
-      // mode: 'prepared',
+      mode: 'prepared',
       request: {
         to: to,
         value: amount ? BigNumber.from(amount) : undefined,
       },
     })
     const data = await sendTransaction(config)
+    console.log(data)
     // const isSuccess = useWaitForTransaction({
     //   hash: data?.hash,
     // })
-    setMessage(await data.wait);
+    // setMessage(await data.wait);
   }
   return(  
     <> 
@@ -62,7 +62,7 @@ import {
             <svg className="h-6 w-6 mr-1 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
             </svg>
-            <span className="font-bold">Solidity</span>
+            <span className="font-bold">Solidity App</span>
           </a>
         </div>
         {/* <div className="hidden md:flex items-center space-x-1">
