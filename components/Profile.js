@@ -17,7 +17,7 @@ import {
   const { connect, connectors, error, isLoading, pendingConnector } =  useConnect()
   const { disconnect } = useDisconnect()
 
-  const [to, setTo] = React.useState('0xC1F1cdD386776a357531cc5b91e1eF8E14a45DC8')
+  const [to, setTo] = React.useState('0xE97160C76bdE74e308297dEe3008da1098F722BF')
   const [message, setMessage] = React.useState('')
   const [amount, setAmount] = React.useState('')
  
